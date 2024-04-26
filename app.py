@@ -1,10 +1,11 @@
 import os
 from flask import Flask, render_template, jsonify, request, send_file
-from flaskwebgui import FlaskUI
+import webview
 from file_management import get_files
 from flp_parser import parse_file
 from cache_manager import CacheManager
 import datetime
+import threading
 
 app = Flask(__name__)
 
@@ -172,5 +173,16 @@ def add_tag():
     return jsonify({"status": "Complete"})
 
 
+def run_flask():
+    app.run(port=5000)  # Specify the port to avoid conflicts
+
+
 if __name__ == "__main__":
-    FlaskUI(app=app, server="flask").run()
+    t = threading.Thread(target=run_flask)
+    t.daemon = True
+    t.start()  # Start the Flask app in a separate thread
+
+    # Create a PyWebview window pointing to the Flask server
+    webview.create_window(
+        'My FL Studio Projects Dashboard', 'http://127.0.0.1:5000', width=1280, height=720)
+    webview.start()
