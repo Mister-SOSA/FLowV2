@@ -195,4 +195,62 @@
         });
     });
 
+    tippy('.color-bar', {
+        content: `
+    <div class="color-picker">
+        <div class="color" data-color="blue" style="background-color: var(--color-blue);"></div>
+        <div class="color" data-color="green" style="background-color: var(--color-green);"></div>
+        <div class="color" data-color="red" style="background-color: var(--color-red);"></div>
+        <div class="color" data-color="yellow" style="background-color: var(--color-yellow);"></div>
+        <div class="color" data-color="grey" style="background-color: var(--color-grey);"></div>
+        <div class="color" data-color="purple" style="background-color: var(--color-purple);"></div>
+        <div class="color" data-color="orange" style="background-color: var(--color-orange);"></div>
+        <div class="color" data-color="pink" style="background-color: var(--color-pink);"></div>
+        <div class="color" data-color="cyan" style="background-color: var(--color-cyan);"></div>
+        <div class="color" data-color="teal" style="background-color: var(--color-teal);"></div>
+        <div class="color" data-color="lime" style="background-color: var(--color-lime);"></div>
+        <div class="color" data-color="amber" style="background-color: var(--color-amber);"></div>
+    </div>
+    `,
+        placement: 'bottom',
+        theme: 'light',
+        animation: 'scale',
+        arrow: true,
+        duration: 200,
+        interactive: true,
+        trigger: 'click',
+        allowHTML: true,
+        onShown(instance) {
+            instance.popper.querySelectorAll('.color').forEach(color => {
+                color.addEventListener('click', () => {
+                    const project = instance.reference.closest('.project');
+                    const colorBar = project.querySelector('.color-bar');
+                    const colorName = color.getAttribute('data-color');
+
+                    colorBar.style.backgroundColor = `var(--color-${colorName})`;
+
+                    fetch('/change-color', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            project_id: project.getAttribute('project_id'),
+                            color: colorName
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log('Color changed:', colorName);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error changing color:', error);
+                        });
+                });
+            });
+        }
+    });
+
 </script>

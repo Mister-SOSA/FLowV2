@@ -1,6 +1,8 @@
 import os
 import json
 
+CACHE_DIR = './flp_cache'
+
 
 class CacheManager:
     def __init__(self, cache_dir):
@@ -28,3 +30,16 @@ class CacheManager:
         if cached_data and cached_data['modified_at'] == modification_time:
             return True
         return False
+
+    def update_cache_data_by_project_id(self, project_id, data):
+        cache_files = os.listdir(CACHE_DIR)
+
+        for file in cache_files:
+            with open(os.path.join(CACHE_DIR, file), 'r') as f:
+                cached_data = json.load(f)
+                if int(cached_data['file_id']) == int(project_id):
+                    print(f"Updating cache for {cached_data['file_name']}")
+                    cached_data.update(data)
+                    with open(os.path.join(CACHE_DIR, file), 'w') as f:
+                        json.dump(cached_data, f, indent=4)
+                    break

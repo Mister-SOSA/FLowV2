@@ -69,5 +69,16 @@ def open_folder():
     return jsonify({"status": "Complete"})
 
 
+@app.route("/change-color", methods=['POST'])
+def change_color():
+    data = request.get_json()
+    project_id = data['project_id']
+    color = data['color']
+    cache_dir = 'flp_cache'
+    cache_manager = CacheManager(cache_dir)
+    cache_manager.update_cache_data_by_project_id(project_id, {'color': color})
+    return jsonify({"status": "Complete"})
+
+
 if __name__ == "__main__":
     FlaskUI(app=app, server="flask").run()
