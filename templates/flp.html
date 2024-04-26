@@ -55,7 +55,7 @@
             {% endfor %}
             {% if filtered_channels|length > 4 %}
             <div class="channel">
-                <span class="channel-name">+{{ filtered_channels|length - 4 }}</span>
+                <span class="channel-name">+{{ file['channels']|length - 4 }}</span>
             </div>
             {% endif %}
             {% if filtered_channels|length == 0 %}
