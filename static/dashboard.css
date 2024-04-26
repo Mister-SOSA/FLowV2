@@ -50,6 +50,7 @@
 .actions {
     display: flex;
     justify-content: flex-end;
+    margin-right: 1rem;
 }
 
 .info-column {
