@@ -3,24 +3,14 @@
     <div class="main-info info-column">
         <span class="project-name">{{ file['file_name'].split('.flp')[0] }}</span>
         <div class="tags-container">
+            {% for tag in file['tags'] %}
             <div class="tag">
                 <span class="material-symbols-outlined tag-icon">
                     shoppingmode
                 </span>
-                <span class="tag-text">XYZ Beat</span>
+                <span class="tag-text">{{ tag }}</span>
             </div>
-            <div class="tag">
-                <span class="material-symbols-outlined tag-icon">
-                    shoppingmode
-                </span>
-                <span class="tag-text">Samples</span>
-            </div>
-            <div class="tag">
-                <span class="material-symbols-outlined tag-icon">
-                    shoppingmode
-                </span>
-                <span class="tag-text">For Sale</span>
-            </div>
+            {% endfor %}
         </div>
     </div>
     <div class="tempo-container info-column">
