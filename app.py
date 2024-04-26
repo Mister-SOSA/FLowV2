@@ -53,9 +53,20 @@ def parse_files():
     return jsonify({"status": "Complete"})
 
 
-@ app.route("/home", methods=['GET'])
-def home():
-    return render_template('index.html')
+@ app.route("/open-project", methods=['POST'])
+def open_file():
+    data = request.get_json()
+    file_path = data['project_path']
+    os.system(f'open "{file_path}"')
+    return jsonify({"status": "Complete"})
+
+
+@app.route("/open-folder", methods=['POST'])
+def open_folder():
+    data = request.get_json()  # Use get_json() to properly parse the JSON data
+    folder_path = data['folder_path']
+    os.system(f'open "{folder_path}"')
+    return jsonify({"status": "Complete"})
 
 
 if __name__ == "__main__":

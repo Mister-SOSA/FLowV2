@@ -139,3 +139,60 @@
         duration: 200
     })
 </script>
+
+<script>
+
+    document.querySelectorAll('.action.folder-open').forEach(action => {
+        action.addEventListener('click', () => {
+            const project = action.closest('.project');
+            const projectPath = project.getAttribute('project_path');
+            const folderPath = projectPath.substring(0, projectPath.lastIndexOf('/'));
+
+            fetch('/open-folder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    folder_path: folderPath
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Folder opened:', projectPath);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    });
+
+    document.querySelectorAll('.action.open').forEach(action => {
+        action.addEventListener('click', () => {
+            const project = action.closest('.project');
+            const projectPath = project.getAttribute('project_path');
+
+            fetch('/open-project', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    project_path: projectPath
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Project opened:', projectPath);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    });
+
+</script>
