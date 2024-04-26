@@ -104,9 +104,33 @@
 .channel {
     padding: 0.25rem;
     border-radius: 5px;
-    background-color: var(--secondary-color);
+    background-color: var(--color-purple);
     color: var(--text-color);
     font-size: 0.75rem;
+}
+
+.channel.sample {
+    background-color: var(--color-orange);
+    cursor: pointer;
+}
+
+.sample-playing {
+    background-color: var(--color-green);
+    animation: flash 1s infinite;
+}
+
+@keyframes flash {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .action {

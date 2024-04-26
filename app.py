@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_file
 from flaskwebgui import FlaskUI
 from file_management import get_files
 from flp_parser import parse_file
@@ -132,6 +132,21 @@ def clear_cache():
     for file in cache_files:
         os.remove(os.path.join(cache_dir, file))
     return jsonify({"status": "Complete"})
+
+
+@app.route('/fetch-sample', methods=['POST'])
+def fetch_sample():
+    """
+    Fetches a sample file and sends it as a response.
+
+    This function receives a JSON payload containing the sample path and sends the file as a response.
+
+    Returns:
+        The sample file as a response.
+    """
+    data = request.get_json()
+    sample_path = data['sample_path']
+    return send_file(sample_path, as_attachment=True)
 
 
 if __name__ == "__main__":

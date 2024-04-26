@@ -49,30 +49,38 @@
         </span>
         <div class="channels-list">
             {% set filtered_channels = file['channels'] | selectattr('type', 'equalto', 'Fruity Wrapper') | list %}
-            {% for channel in filtered_channels[:3] %}
-            <div class="channel">
-                <span class="channel-name">{{ channel['name'][:12] + '...' if channel['name']|length > 14 else
-                    channel['name'] }}</span>
-            </div>
-            {% endfor %}
-            {% if filtered_channels|length > 4 %}
-            <div class="channel">
-                <span class="channel-name">+{{ file['channels']|length - 4 }}</span>
-            </div>
-            {% endif %}
-            {% if filtered_channels|length == 0 %}
-            <div class="channel none-found">
-                <span class="channel-name none-found">None</span>
-            </div>
-            {% endif %}
+            {% if filtered_channels|length < 1 %} {% for sample in file['samples'][:3] %} <div
+                data-sample-path="{{ sample['path'] }}" class="channel sample">
+                <span class="channel-name">{{ sample['name'][:12] + '...' if sample['name']|length > 14 else
+                    sample['name'] }}</span>
         </div>
+        {% endfor %}
+        {% else %}
+        {% for channel in filtered_channels[:3] %}
+        <div class="channel">
+            <span class="channel-name">{{ channel['name'][:12] + '...' if channel['name']|length > 14 else
+                channel['name'] }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% if filtered_channels|length > 4 %}
+        <div class="channel">
+            <span class="channel-name">+{{ file['channels']|length - 4 }}</span>
+        </div>
+        {% endif %}
+        {% if filtered_channels|length == 0 and file['samples']|length == 0 %}
+        <div class="channel none-found">
+            <span class="channel-name none-found">None</span>
+        </div>
+        {% endif %}
     </div>
-    <div class="actions info-column">
-        <span class="material-symbols-outlined action folder-open">
-            folder_open
-        </span>
-        <span class="material-symbols-outlined action open">
-            open_in_new
-        </span>
-    </div>
+</div>
+<div class="actions info-column">
+    <span class="material-symbols-outlined action folder-open">
+        folder_open
+    </span>
+    <span class="material-symbols-outlined action open">
+        open_in_new
+    </span>
+</div>
 </div>

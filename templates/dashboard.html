@@ -312,3 +312,84 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sampleLabels = document.querySelectorAll('.channel.sample');
+
+        // Store the currently playing audio globally to manage playback
+        let currentAudio = null;
+        let currentLabel = null; // To track the label with the currently playing audio
+
+        sampleLabels.forEach(label => {
+            label.addEventListener('click', () => {
+                // Remove the playing class from the previously playing sample
+                if (currentLabel && currentLabel !== label) {
+                    currentLabel.classList.remove('sample-playing');
+                }
+
+                // Check if there's any audio currently playing
+                if (currentAudio && currentAudio !== label.audio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                }
+
+                // Check if this label already has an audio object
+                if (label.audio) {
+                    if (label.audio.paused) {
+                        label.audio.play();
+                        currentAudio = label.audio;  // Update the currentAudio reference
+                        currentLabel = label;        // Update the currentLabel
+                        label.classList.add('sample-playing');
+                    } else {
+                        label.audio.pause();
+                        label.audio.currentTime = 0;
+                        currentAudio = null;  // Clear the currentAudio since no audio is playing
+                        label.classList.remove('sample-playing');
+                        currentLabel = null;  // Clear the currentLabel since no audio is playing
+                    }
+                    return;
+                }
+
+                // Fetch new audio if none was attached to this label
+                const samplePath = label.getAttribute('data-sample-path');
+                fetch('/fetch-sample', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ sample_path: samplePath })
+                })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        // Make sure to stop and reset any current audio before playing new
+                        if (currentAudio) {
+                            currentAudio.pause();
+                            currentAudio.currentTime = 0;
+                            if (currentLabel) {
+                                currentLabel.classList.remove('sample-playing');
+                            }
+                        }
+
+                        const audio = new Audio(URL.createObjectURL(blob));
+                        label.audio = audio;  // Attach the audio object to the label
+                        audio.play();
+                        currentAudio = audio;  // Update currentAudio with the new audio object
+                        currentLabel = label;  // Update currentLabel with the new label
+                        label.classList.add('sample-playing');
+
+                        // Ensure the class is removed when audio ends
+                        audio.onended = () => {
+                            label.classList.remove('sample-playing');
+                            currentLabel = null; // Clear the currentLabel when audio ends
+                        };
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        });
+    });
+
+
+</script>
