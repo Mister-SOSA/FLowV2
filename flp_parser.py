@@ -1,5 +1,6 @@
 import pyflp
 import os
+import random
 
 
 def parse_file(file_path):
@@ -7,6 +8,7 @@ def parse_file(file_path):
     try:
         flp_data = pyflp.parse(file_path)
         return {
+            'file_id': random.randint(1000000000, 9999999999),
             'file_path': file_path,
             'file_name': os.path.basename(file_path),
             'title': flp_data.title,
