@@ -15,6 +15,7 @@ def parse_file(file_path):
             'arrangements': [{'name': arrangement.name} for arrangement in flp_data.arrangements],
             'patterns': [{'name': pattern.name, 'color': pattern.color, 'length': pattern.length} for pattern in flp_data.patterns],
             'channels': [{'name': channel.name, 'color': channel.color, 'type': channel.internal_name} for channel in flp_data.channels],
+            'running_time': max([len(track) for arrangement in flp_data.arrangements for track in arrangement.tracks]) * flp_data.tempo,
             'modified_at': os.path.getmtime(file_path),
             'created_at': os.path.getctime(file_path)
         }
