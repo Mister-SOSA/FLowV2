@@ -189,3 +189,28 @@
     font-size: 0.55rem;
     outline: 1px solid var(--secondary-color);
 }
+
+@media (max-width: 768px) {
+    .projects {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .project {
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 0.5rem;
+    }
+
+    .info-column,
+    .main-info,
+    .last-modified,
+    .actions {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .title {
+        font-size: 2rem;
+        /* Smaller font size for smaller screens */
+    }
+}
