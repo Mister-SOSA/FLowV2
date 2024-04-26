@@ -80,5 +80,14 @@ def change_color():
     return jsonify({"status": "Complete"})
 
 
+@app.route("/clear-cache", methods=['GET'])
+def clear_cache():
+    cache_dir = 'flp_cache'
+    cache_files = os.listdir(cache_dir)
+    for file in cache_files:
+        os.remove(os.path.join(cache_dir, file))
+    return jsonify({"status": "Complete"})
+
+
 if __name__ == "__main__":
     FlaskUI(app=app, server="flask").run()
