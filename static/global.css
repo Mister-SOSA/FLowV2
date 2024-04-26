@@ -41,7 +41,7 @@
     --line-height: 1.5;
 
     /* Prefs */
-    /* user-select: none; */
+    user-select: none;
 }
 
 /* Reset default styles */
