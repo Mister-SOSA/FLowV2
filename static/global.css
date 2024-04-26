@@ -59,4 +59,8 @@ body {
     /* Use the new variable for text color */
 }
 
-/* Add your custom styles here */
+.align-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

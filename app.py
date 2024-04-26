@@ -11,8 +11,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def loading():
-    """ 
-    Render the loading page. 
+    """
+    Render the loading page.
     This page will be displayed while the files are being parsed.
     """
 
@@ -23,7 +23,7 @@ def loading():
 
 @app.route("/dashboard", methods=['GET'])
 def dashboard():
-    """ 
+    """
     Render the dashboard page.
     This page will display the parsed FL Studio project files.
     """
@@ -42,7 +42,7 @@ def dashboard():
         reverse=True
     )
 
-    return render_template('dashboard.html', files=files, now=datetime.datetime.now())
+    return render_template('dashboard.html', files=files, now=datetime.datetime.now(), total_time_spent=sum([file['time_spent'] for file in files]))
 
 
 @ app.route("/parse-files", methods=['POST', 'GET'])
@@ -83,7 +83,7 @@ def open_file():
     return jsonify({"status": "Complete"})
 
 
-@app.route("/open-folder", methods=['POST'])
+@ app.route("/open-folder", methods=['POST'])
 def open_folder():
     """
     Opens the specified folder path.
@@ -99,7 +99,7 @@ def open_folder():
     return jsonify({"status": "Complete"})
 
 
-@app.route("/change-color", methods=['POST'])
+@ app.route("/change-color", methods=['POST'])
 def change_color():
     """
     Change the color of a project.
@@ -119,7 +119,7 @@ def change_color():
     return jsonify({"status": "Complete"})
 
 
-@app.route("/clear-cache", methods=['GET'])
+@ app.route("/clear-cache", methods=['GET'])
 def clear_cache():
     """
     Clears the cache directory by removing all JSON files.

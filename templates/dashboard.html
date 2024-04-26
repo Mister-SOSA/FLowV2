@@ -17,6 +17,18 @@
 <body>
     <div class="header">
         <span class="title">Header</span>
+        <div class="time-spent-container align-center">
+            <span class="material-symbols-outlined time-spent-icon">timer</span>
+            <span class="time-spent">You've spent
+                {% set days = total_time_spent // 86400 %}
+                {% set hours = (total_time_spent % 86400) // 3600 %}
+                {% set minutes = (total_time_spent % 3600) // 60 %}
+                {{ days|default(0)|int }} day{{ 's' if days > 1 else '' }},
+                {{ hours|default(0)|int }} hour{{ 's' if hours > 1 else '' }},
+                {{ minutes|default(0)|int }} minute{{ 's' if minutes > 1 else '' }}
+                making bangers.
+            </span>
+        </div>
         <div class="header-actions actions">
             <span class="material-symbols-outlined action clear-cache">
                 reset_wrench
