@@ -2,9 +2,21 @@ import pyflp
 import os
 import random
 
+import pyflp.arrangement
+import pyflp.project
 
-def parse_file(file_path):
-    """ Attempt to parse an FLP file, handling any exceptions. """
+
+def parse_file(file_path: str):
+    """
+    Parses an FL Studio project file and returns a dictionary containing relevant information.
+
+    Args:
+        file_path (str): The path to the FL Studio project file.
+
+    Returns:
+        dict or None: A dictionary containing the parsed information if successful, or None if an error occurs.
+    """
+
     try:
         flp_data = pyflp.parse(file_path)
         return {
@@ -28,7 +40,19 @@ def parse_file(file_path):
         return None
 
 
-def calculate_arrangement_duration(arrangement, bpm, ppq_per_beat):
+def calculate_arrangement_duration(arrangement: pyflp.arrangement, bpm: float, ppq_per_beat: int) -> float:
+    """
+    Calculate the duration of an arrangement in seconds.
+
+    Args:
+        arrangement: The arrangement to calculate the duration for.
+        bpm: The beats per minute of the arrangement.
+        ppq_per_beat: The pulses per quarter note of the arrangement.
+
+    Returns:
+        float: The duration of the arrangement in seconds.
+    """
+
     max_end_time_ppq = 0
     for track in arrangement.tracks:  # Assuming tracks is a method or property that yields Track objects
         for item in track:  # Here we use the track's __iter__ method implicitly

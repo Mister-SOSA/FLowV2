@@ -11,6 +11,11 @@ app = Flask(__name__)
 
 @app.route("/")
 def loading():
+    """ 
+    Render the loading page. 
+    This page will be displayed while the files are being parsed.
+    """
+
     return render_template('index.html',
                            parse_files=parse_files,
                            number_of_files=sum(1 for _ in get_files('/Users/sosa/Documents/Image-Line/FL Studio/Projects', '.flp')))
@@ -18,6 +23,11 @@ def loading():
 
 @app.route("/dashboard", methods=['GET'])
 def dashboard():
+    """ 
+    Render the dashboard page.
+    This page will display the parsed FL Studio project files.
+    """
+
     flp_dir = '/Users/sosa/Documents/Image-Line/FL Studio/Projects'
     cache_dir = 'flp_cache'
     cache_manager = CacheManager(cache_dir)
@@ -37,6 +47,12 @@ def dashboard():
 
 @ app.route("/parse-files", methods=['POST', 'GET'])
 def parse_files():
+    """
+    Parse all FL Studio project files in the specified directory.
+
+    Returns:
+        dict: A JSON response indicating the status of the parsing operation.
+    """
     print("Parsing files...")
     flp_dir = '/Users/sosa/Documents/Image-Line/FL Studio/Projects'
     cache_dir = 'flp_cache'
@@ -55,6 +71,12 @@ def parse_files():
 
 @ app.route("/open-project", methods=['POST'])
 def open_file():
+    """
+    Opens a file specified by the 'project_path' parameter in the request JSON.
+
+    Returns:
+        A JSON response indicating the status of the operation.
+    """
     data = request.get_json()
     file_path = data['project_path']
     os.system(f'open "{file_path}"')
@@ -63,6 +85,14 @@ def open_file():
 
 @app.route("/open-folder", methods=['POST'])
 def open_folder():
+    """
+    Opens the specified folder path.
+
+    This function takes a JSON payload containing the folder path and opens it using the default file explorer.
+
+    Returns:
+        A JSON response indicating the status of the operation.
+    """
     data = request.get_json()  # Use get_json() to properly parse the JSON data
     folder_path = data['folder_path']
     os.system(f'open "{folder_path}"')
@@ -71,6 +101,15 @@ def open_folder():
 
 @app.route("/change-color", methods=['POST'])
 def change_color():
+    """
+    Change the color of a project.
+
+    This function receives a JSON payload containing the project ID and the new color.
+    It updates the cache data for the specified project ID with the new color.
+
+    Returns:
+        A JSON response indicating the status of the operation.
+    """
     data = request.get_json()
     project_id = data['project_id']
     color = data['color']
@@ -82,6 +121,12 @@ def change_color():
 
 @app.route("/clear-cache", methods=['GET'])
 def clear_cache():
+    """
+    Clears the cache directory by removing all JSON files.
+
+    Returns:
+        A JSON response indicating the status of the operation.
+    """
     cache_dir = 'flp_cache'
     cache_files = os.listdir(cache_dir)
     for file in cache_files:
