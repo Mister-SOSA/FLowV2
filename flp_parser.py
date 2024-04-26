@@ -19,7 +19,7 @@ def parse_file(file_path):
             'modified_at': os.path.getmtime(file_path),
             'created_at': os.path.getctime(file_path),
             'tags': [],
-            'color': None
+            'color': 'blue'
         }
     except Exception as e:
         print(f"Failed to parse {file_path}: {e}")
