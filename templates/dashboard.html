@@ -273,3 +273,30 @@
     });
 
 </script>
+
+
+<script>
+    const addTagButtons = document.querySelectorAll('.add-tag-button');
+    addTagButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tagInput = prompt('Enter a tag:');
+            if (tagInput) {
+                const tagContainer = button.closest('.tags-container');
+                const tagElement = document.createElement('div');
+                tagElement.classList.add('tag');
+                tagElement.innerHTML = `
+                    <span class="material-symbols-outlined tag-icon">
+                        shoppingmode
+                    </span>
+                    <span class="tag-text">${tagInput}</span>
+                `;
+
+                // Get the parent div of the button to use as the reference for insertBefore
+                const buttonContainer = button.closest('.add-tag-button-container');
+
+                // Insert the new tag element before the button container
+                tagContainer.insertBefore(tagElement, buttonContainer);
+            }
+        });
+    });
+</script>

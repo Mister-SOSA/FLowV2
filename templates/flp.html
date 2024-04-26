@@ -3,6 +3,7 @@
     <div class="main-info info-column">
         <span class="project-name">{{ file['file_name'].split('.flp')[0] }}</span>
         <div class="tags-container">
+            {%if file['tags']|length > 0 %}
             {% for tag in file['tags'] %}
             <div class="tag">
                 <span class="material-symbols-outlined tag-icon">
@@ -11,11 +12,34 @@
                 <span class="tag-text">{{ tag }}</span>
             </div>
             {% endfor %}
+            {% else %}
+            <div class="tag add-tag-button-container">
+                <span class="tag-text add-tag-button">add tag</span>
+            </div>
+            {% endif %}
         </div>
+    </div>
+    <div class="last-modified info-column">
+        <span class="material-symbols-outlined info-icon icon-last-modified">
+            access_time
+        </span>
+        <span class="modified_at">{{ file['modified_at'] }}</span>
     </div>
     <div class="tempo-container info-column">
         <span class="info-icon mdi mdi-metronome icon-tempo"></span>
         <span class="tempo">{{ '{:.0f}'.format(file['tempo']) if file['tempo'] % 1 == 0 else file['tempo'] }}</span>
+    </div>
+    <div class="running-time info-column">
+        <span class="material-symbols-outlined info-icon icon-running-time">
+            timer
+        </span>
+        {% if file['running_time']|int == 0 %}
+        <span class="running-time empty-playlist">Empty</span>
+        {% else %}
+        <span class="running-time">{{ '{:02d}:{:02d}'.format(file['running_time']|int // 60, file['running_time']|int %
+            60)
+            }}</span>
+        {% endif %}
     </div>
     <div class="channels-container info-column">
         <span class="material-symbols-outlined icon-channels">
@@ -25,7 +49,8 @@
             {% set filtered_channels = file['channels'] | selectattr('type', 'equalto', 'Fruity Wrapper') | list %}
             {% for channel in filtered_channels[:3] %}
             <div class="channel">
-                <span class="channel-name">{{ channel['name'] }}</span>
+                <span class="channel-name">{{ channel['name'][:12] + '...' if channel['name']|length > 14 else
+                    channel['name'] }}</span>
             </div>
             {% endfor %}
             {% if filtered_channels|length > 4 %}
@@ -39,24 +64,6 @@
             </div>
             {% endif %}
         </div>
-    </div>
-    <div class="last-modified info-column">
-        <span class="material-symbols-outlined info-icon icon-last-modified">
-            access_time
-        </span>
-        <span class="modified_at">{{ file['modified_at'] }}</span>
-    </div>
-    <div class="running-time info-column">
-        <span class="material-symbols-outlined info-icon icon-running-time">
-            timer
-        </span>
-        {% if file['running_time']|int == 0 %}
-        <span class="running-time empty-playlist">Empty</span>
-        {% else %}
-        <span class="running-time">{{ '{:02d}:{:02d}'.format(file['running_time']|int // 60, file['running_time']|int %
-            60)
-            }}</span>
-        {% endif %}
     </div>
     <div class="actions info-column">
         <span class="material-symbols-outlined action folder-open">
