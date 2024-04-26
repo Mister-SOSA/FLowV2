@@ -149,5 +149,28 @@ def fetch_sample():
     return send_file(sample_path, as_attachment=True)
 
 
+@app.route('/add-tag', methods=['POST'])
+def add_tag():
+    """
+    Add a tag to a project.
+
+    This function receives a JSON payload containing the project ID and the tag to add.
+    It updates the cache data for the specified project ID with the new tag.
+
+    Returns:
+        A JSON response indicating the status of the operation.
+    """
+    data = request.get_json()
+    project_id = data['project_id']
+    tag = data['tag']
+    cache_dir = 'flp_cache'
+    cache_manager = CacheManager(cache_dir)
+    project = cache_manager.fetch_cached_project_by_id(project_id)
+    current_tags = project['tags']
+    cache_manager.update_cache_data_by_project_id(
+        project_id, {'tags': current_tags + [tag]})
+    return jsonify({"status": "Complete"})
+
+
 if __name__ == "__main__":
     FlaskUI(app=app, server="flask").run()

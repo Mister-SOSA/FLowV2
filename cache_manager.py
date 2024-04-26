@@ -31,6 +31,16 @@ class CacheManager:
             return True
         return False
 
+    def fetch_cached_project_by_id(self, project_id):
+        cache_files = os.listdir(CACHE_DIR)
+
+        for file in cache_files:
+            with open(os.path.join(CACHE_DIR, file), 'r') as f:
+                cached_data = json.load(f)
+                if int(cached_data['file_id']) == int(project_id):
+                    return cached_data
+        return None
+
     def update_cache_data_by_project_id(self, project_id, data):
         cache_files = os.listdir(CACHE_DIR)
 
