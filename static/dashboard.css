@@ -115,7 +115,7 @@
 }
 
 .sample-playing {
-    background-color: var(--color-green);
+    background-color: var(--color-pink) !important;
     animation: flash 1s infinite;
 }
 
