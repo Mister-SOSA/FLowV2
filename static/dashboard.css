@@ -162,7 +162,8 @@
 
 .channel.none-found {
     background-color: var(--foreground-color);
-    color: var(--text-color);
+    color: var(--secondary-color);
+    font-style: italic;
 }
 
 .empty-playlist {
