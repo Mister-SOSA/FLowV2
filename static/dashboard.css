@@ -17,8 +17,9 @@
 }
 
 .title {
-    font-size: 4rem;
-    font-weight: bolder;
+    font-size: 5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
 }
 
 .projects {
@@ -168,6 +169,7 @@
 .tags-container {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .channel.none-found {
@@ -188,6 +190,20 @@
     color: var(--text-color);
     font-size: 0.55rem;
     outline: 1px solid var(--secondary-color);
+    width: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1rem;
+}
+
+.add-tag-button {
+    font-size: 0.75rem;
+    color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
 }
 
 @media (max-width: 768px) {

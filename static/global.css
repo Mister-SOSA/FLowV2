@@ -1,4 +1,6 @@
 /* Global Styles */
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+
 
 :root {
     --primary-color: #4CAF50;
@@ -34,8 +36,8 @@
     --color-amber: #FFC107;
 
     /* Fonts */
-    --font-family: 'Roboto', sans-serif;
-    --font-size: 16px;
+    --font-family: 'SF Pro Display', sans-serif;
+    --font-size: 1rem;
     --line-height: 1.5;
 }
 
