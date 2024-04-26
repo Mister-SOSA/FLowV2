@@ -39,6 +39,9 @@
     --font-family: 'SF Pro Display', sans-serif;
     --font-size: 1rem;
     --line-height: 1.5;
+
+    /* Prefs */
+    /* user-select: none; */
 }
 
 /* Reset default styles */
