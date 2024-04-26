@@ -15,10 +15,24 @@ def parse_file(file_path):
             'arrangements': [{'name': arrangement.name} for arrangement in flp_data.arrangements],
             'patterns': [{'name': pattern.name, 'color': pattern.color, 'length': pattern.length} for pattern in flp_data.patterns],
             'channels': [{'name': channel.name, 'color': channel.color, 'type': channel.internal_name} for channel in flp_data.channels],
-            'running_time': max([len(track) for arrangement in flp_data.arrangements for track in arrangement.tracks]) * flp_data.tempo,
+            'running_time': calculate_arrangement_duration(flp_data.arrangements[0], flp_data.tempo, flp_data.ppq),
             'modified_at': os.path.getmtime(file_path),
-            'created_at': os.path.getctime(file_path)
+            'created_at': os.path.getctime(file_path),
+            'tags': []
         }
     except Exception as e:
         print(f"Failed to parse {file_path}: {e}")
         return None
+
+
+def calculate_arrangement_duration(arrangement, bpm, ppq_per_beat):
+    max_end_time_ppq = 0
+    for track in arrangement.tracks:  # Assuming tracks is a method or property that yields Track objects
+        for item in track:  # Here we use the track's __iter__ method implicitly
+            # Assuming length is now correctly understood/calculated
+            end_time = item.position + item.length
+            max_end_time_ppq = max(max_end_time_ppq, end_time)
+
+    # Convert PPQ to seconds
+    duration_seconds = (max_end_time_ppq / ppq_per_beat) * (60 / bpm)
+    return duration_seconds

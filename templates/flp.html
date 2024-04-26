@@ -1,8 +1,7 @@
 <div class="project">
     <div class="color-bar info-column"></div>
     <div class="main-info info-column">
-        {# <span class="project-name">{{ file['file_name'].split('.flp')[0] }}</span> #}
-        <span class="project-name">File Name XYZXYZXYZXYZXYZXYZ.flp</span>
+        <span class="project-name">{{ file['file_name'].split('.flp')[0] }}</span>
         <div class="tags-container">
             <div class="tag">
                 <span class="material-symbols-outlined tag-icon">
@@ -57,11 +56,17 @@
         </span>
         <span class="modified_at">{{ file['modified_at'] }}</span>
     </div>
-    <div class="time-spent info-column">
-        <span class="material-symbols-outlined info-icon icon-time-spent">
+    <div class="running-time info-column">
+        <span class="material-symbols-outlined info-icon icon-running-time">
             timer
         </span>
-        <span>{{ '%dh %dm' % (file['time_spent'] // 3600, (file['time_spent'] % 3600) // 60) }}</span>
+        {% if file['running_time']|int == 0 %}
+        <span class="running-time empty-playlist">Empty</span>
+        {% else %}
+        <span class="running-time">{{ '{:02d}:{:02d}'.format(file['running_time']|int // 60, file['running_time']|int %
+            60)
+            }}</span>
+        {% endif %}
     </div>
     <div class="actions info-column">
         <span class="material-symbols-outlined action delete">
