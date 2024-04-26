@@ -1,0 +1,49 @@
+/* Global Styles */
+
+:root {
+    --primary-color: #4CAF50;
+    /* Business green */
+    --secondary-color: #555B6E;
+    /* Slate grey */
+    --success-color: #4CAF50;
+    /* Consistent business green */
+    --danger-color: #E63946;
+    /* Strong red */
+    --warning-color: #FFC107;
+    /* Amber */
+    --info-color: #2196F3;
+    /* Bright blue */
+    --background-color: #121921;
+    /* Very dark blue */
+    --foreground-color: #1C2531;
+    /* Dark blue grey */
+    --text-color: #FFFFFF;
+    /* Pure white */
+
+    /* Fonts */
+    --font-family: 'Roboto', sans-serif;
+    --font-size: 16px;
+    --line-height: 1.5;
+}
+
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set the root font */
+html {
+    font-size: var(--font-size);
+    font: 1rem/var(--line-height) var(--font-family);
+}
+
+/* Set the body background color and text color */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    /* Use the new variable for text color */
+}
+
+/* Add your custom styles here */

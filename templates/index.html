@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flask Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='global.css') }}">
+</head>
+
+<body>
+    <h1>Processing {{number_of_files}} Projects</h1>
+
+    <p>This is a basic HTML Flask page.</p>
+
+    {% block content %}
+    {% endblock %}
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+
+
+</html>
+
+<script>
+
+    fetch('/parse-files')
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = '/dashboard';
+        })
+        .catch(error => {
+            // Handle any errors that occurred during the request
+            console.error(error);
+        });
+
+</script>

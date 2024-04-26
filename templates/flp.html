@@ -1,0 +1,76 @@
+<div class="project">
+    <div class="color-bar info-column"></div>
+    <div class="main-info info-column">
+        <span class="project-name">{{ file['file_name'].split('.flp')[0] }}</span>
+        <div class="tags-container">
+            <div class="tag">
+                <span class="material-symbols-outlined tag-icon">
+                    shoppingmode
+                </span>
+                <span class="tag-text">XYZ Type Beat</span>
+            </div>
+            <div class="tag">
+                <span class="material-symbols-outlined tag-icon">
+                    shoppingmode
+                </span>
+                <span class="tag-text">Detroit</span>
+            </div>
+            <div class="tag">
+                <span class="material-symbols-outlined tag-icon">
+                    shoppingmode
+                </span>
+                <span class="tag-text">Pianos</span>
+            </div>
+        </div>
+    </div>
+    <div class="tempo-container info-column">
+        <span class="info-icon mdi mdi-metronome icon-tempo"></span>
+        <span class="tempo">{{ '{:.0f}'.format(file['tempo']) if file['tempo'] % 1 == 0 else file['tempo'] }}</span>
+    </div>
+    <div class="channels-container info-column">
+        <span class="material-symbols-outlined icon-channels">
+            piano
+        </span>
+        <div class="channels-list">
+            {% set filtered_channels = file['channels'] | selectattr('type', 'equalto', 'Fruity Wrapper') | list %}
+            {% for channel in filtered_channels[:3] %}
+            <div class="channel">
+                <span class="channel-name">{{ channel['name'] }}</span>
+            </div>
+            {% endfor %}
+            {% if filtered_channels|length > 4 %}
+            <div class="channel">
+                <span class="channel-name">+{{ filtered_channels|length - 4 }}</span>
+            </div>
+            {% endif %}
+            {% if filtered_channels|length == 0 %}
+            <div class="channel none-found">
+                <span class="channel-name none-found">None</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="last-modified info-column">
+        <span class="material-symbols-outlined info-icon icon-last-modified">
+            access_time
+        </span>
+        <span class="modified_at">{{ file['modified_at'] }}</span>
+    </div>
+    <div class="time-spent info-column">
+        <span class="material-symbols-outlined info-icon icon-time-spent">
+            timer
+        </span>
+        <span>{{ '%dh %dm' % (file['time_spent'] // 3600, (file['time_spent'] % 3600) // 60) }}</span>
+    </div>
+    <div class="actions info-column">
+        <span class="material-symbols-outlined action delete">
+            delete
+        </span>
+        <span class="material-symbols-outlined action folder-open">
+            folder_open
+        </span>
+        <span class="material-symbols-outlined action open">
+            open_in_new
+        </span>
+    </div>
+</div>
