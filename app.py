@@ -173,6 +173,31 @@ def add_tag():
     return jsonify({"status": "Complete"})
 
 
+@ app.route('/delete-tag', methods=['POST'])
+def remove_tag():
+    """
+    Remove a tag from a project.
+
+    This function receives a JSON payload containing the project ID and the tag to remove.
+    It updates the cache data for the specified project ID by removing the tag.
+
+    Returns:
+        A JSON response indicating the status of the operation.
+    """
+    print("Removing tag...")
+    data = request.get_json()
+    project_id = data['project_id']
+    tag = data['tag']
+    cache_dir = 'flp_cache'
+    cache_manager = CacheManager(cache_dir)
+    project = cache_manager.fetch_cached_project_by_id(project_id)
+    current_tags = project['tags']
+    updated_tags = [t for t in current_tags if t != tag]
+    cache_manager.update_cache_data_by_project_id(
+        project_id, {'tags': updated_tags})
+    return jsonify({"status": "Complete"})
+
+
 def run_flask():
     app.run(port=5000)  # Specify the port to avoid conflicts
 
@@ -184,5 +209,5 @@ if __name__ == "__main__":
 
     # Create a PyWebview window pointing to the Flask server
     webview.create_window(
-        'My FL Studio Projects Dashboard', 'http://127.0.0.1:5000', width=1280, height=720)
-    webview.start()
+        'FLow 0.2.5', 'http://127.0.0.1:5000', width=1280, height=720)
+    webview.start(debug=True)
