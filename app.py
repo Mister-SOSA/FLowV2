@@ -8,10 +8,15 @@ import datetime
 import threading
 import platform
 import subprocess
-import subprocess
-import platform
+import json
 
 app = Flask(__name__)
+
+
+def load_project_paths():
+    with open('./config/dirs.json', 'r') as file:
+        data = json.load(file)
+        return data
 
 
 @app.route("/")
@@ -28,48 +33,41 @@ def loading():
 
 @app.route("/dashboard", methods=['GET'])
 def dashboard():
-    """
-    Render the dashboard page.
-    This page will display the parsed FL Studio project files.
-    """
-
-    flp_dir = '/Users/sosa/Documents/Image-Line/FL Studio/Projects'
+    project_paths = load_project_paths()
     cache_dir = 'flp_cache'
     cache_manager = CacheManager(cache_dir)
+    all_files = []
 
-    files = [cache_manager.get_cached_data(
-        file) for file in get_files(flp_dir, '.flp')]
+    for path in project_paths:
+        files = [cache_manager.get_cached_data(
+            file) for file in get_files(path, '.flp')]
+        all_files.extend(files)
 
-    # sort the files by the last modified date
+    # Sort and filter files
     files = sorted(
-        [file for file in files if file is not None],
+        [file for file in all_files if file is not None],
         key=lambda x: x['modified_at'],
         reverse=True
     )
 
-    return render_template('dashboard.html', files=files, now=datetime.datetime.now(), total_time_spent=sum([file['time_spent'] for file in files]))
+    return render_template('dashboard.html', files=files, now=datetime.datetime.now(), total_time_spent=sum([file['time_spent'] for file in files if file]))
 
 
-@ app.route("/parse-files", methods=['POST', 'GET'])
+@app.route("/parse-files", methods=['POST', 'GET'])
 def parse_files():
-    """
-    Parse all FL Studio project files in the specified directory.
-
-    Returns:
-        dict: A JSON response indicating the status of the parsing operation.
-    """
-    print("Parsing files...")
-    flp_dir = '/Users/sosa/Documents/Image-Line/FL Studio/Projects'
+    project_paths = load_project_paths()
     cache_dir = 'flp_cache'
     cache_manager = CacheManager(cache_dir)
 
-    files_to_parse = [file for file in get_files(flp_dir, '.flp')
-                      if not cache_manager.check_cache_validity(file, os.path.getmtime(file))]
+    print("Parsing files...")
+    for path in project_paths:
+        files_to_parse = [file for file in get_files(path, '.flp')
+                          if not cache_manager.check_cache_validity(file, os.path.getmtime(file))]
 
-    for file in files_to_parse:
-        result = parse_file(file)
-        if result:
-            cache_manager.cache_data(result['file_path'], result)
+        for file in files_to_parse:
+            result = parse_file(file)
+            if result:
+                cache_manager.cache_data(result['file_path'], result)
 
     return jsonify({"status": "Complete"})
 
