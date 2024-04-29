@@ -14,7 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
         interactive: true,
         trigger: 'click',
         allowHTML: true,
-        onShown: handleAddTag
+        onShown: instance => {
+            handleAddTag(instance);
+            // Auto-focus the input when the tooltip is shown
+            const tagInput = instance.popper.querySelector('.tag-input');
+            tagInput.focus();
+        }
     });
 });
 
@@ -23,29 +28,42 @@ function handleAddTag(instance) {
     const tagInput = addTagField.querySelector('.tag-input');
     const addTagButton = addTagField.querySelector('.add-tag-button');
 
+    // Event listener to handle clicking the "Add" button
     addTagButton.addEventListener('click', () => {
-        const project = instance.reference.closest('.project');
-        const tagsContainer = project.querySelector('.tags-container');
+        addTag(instance, tagInput, addTagButton);
+    });
 
-        const tagText = tagInput.value.trim();
-        if (tagText) {
-            const tag = createTagElement(tagText);
-            tagsContainer.insertBefore(tag, tagsContainer.lastElementChild);
-
-            addTagToServer(project.getAttribute('project_id'), tagText)
-                .then(data => {
-                    if (data.success) {
-                        console.log('Tag added:', tagText);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error adding tag:', error);
-                });
-
-            tagInput.value = '';
-            instance.hide();
+    // Event listener for the Enter key in the input field
+    tagInput.addEventListener('keydown', (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevents the default action of Enter key in a form
+            addTag(instance, tagInput, addTagButton);
         }
     });
+}
+
+function addTag(instance, tagInput, addTagButton) {
+    const project = instance.reference.closest('.project');
+    const tagsContainer = project.querySelector('.tags-container');
+    const tagText = tagInput.value.trim();
+
+    if (tagText) {
+        const tag = createTagElement(tagText);
+        tagsContainer.insertBefore(tag, tagsContainer.lastElementChild);
+
+        addTagToServer(project.getAttribute('project_id'), tagText)
+            .then(data => {
+                if (data.success) {
+                    console.log('Tag added:', tagText);
+                }
+            })
+            .catch(error => {
+                console.error('Error adding tag:', error);
+            });
+
+        tagInput.value = '';
+        instance.hide();
+    }
 }
 
 function createTagElement(tagText) {

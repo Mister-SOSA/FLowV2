@@ -198,6 +198,23 @@
     padding-top: 0.25rem;
 }
 
+.tag-input {
+    padding: 0.25rem;
+    margin: 0.25rem;
+    border-radius: 5px;
+    background-color: var(--foreground-color);
+    color: var(--text-color);
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.add-tag-button {
+    font-size: 1rem;
+    font-weight: 800;
+
+}
+
 .channel.none-found {
     background-color: var(--foreground-color);
     color: var(--secondary-color);
