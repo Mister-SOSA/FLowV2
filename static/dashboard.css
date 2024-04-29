@@ -70,7 +70,7 @@
 
 @keyframes highlight {
     0% {
-        background-color: var(--color-pink);
+        background-color: var(--color-yellow);
         border-radius: 10px;
     }
 
