@@ -8,6 +8,8 @@ import datetime
 import threading
 import platform
 import subprocess
+import subprocess
+import platform
 
 app = Flask(__name__)
 
@@ -105,7 +107,14 @@ def open_folder():
     """
     data = request.get_json()  # Use get_json() to properly parse the JSON data
     folder_path = data['folder_path']
-    os.system(f'open "{folder_path}"')
+    if platform.system() == 'Darwin':
+        subprocess.call(['open', folder_path])
+    elif platform.system() == 'Windows':
+        subprocess.call(['explorer', folder_path])
+    elif platform.system() == 'Linux':
+        subprocess.call(['xdg-open', folder_path])
+    else:
+        print("Unsupported operating system")
     return jsonify({"status": "Complete"})
 
 
