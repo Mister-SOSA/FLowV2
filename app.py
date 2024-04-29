@@ -6,6 +6,8 @@ from flp_parser import parse_file
 from cache_manager import CacheManager
 import datetime
 import threading
+import platform
+import subprocess
 
 app = Flask(__name__)
 
@@ -80,7 +82,14 @@ def open_file():
     """
     data = request.get_json()
     file_path = data['project_path']
-    os.system(f'open "{file_path}"')
+    if platform.system() == 'Darwin':
+        subprocess.call(('open', file_path))
+    elif platform.system() == 'Windows':
+        subprocess.call(('start', file_path), shell=True)
+    elif platform.system() == 'Linux':
+        subprocess.call(('xdg-open', file_path))
+    else:
+        print("Unsupported operating system")
     return jsonify({"status": "Complete"})
 
 
