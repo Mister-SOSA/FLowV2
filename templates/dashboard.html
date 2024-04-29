@@ -52,6 +52,12 @@
     </div>
 
     <div class="content">
+        <div class="search-bar-container">
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" class="search-input" placeholder="Search for projects...">
+            </div>
+        </div>
         <div class="projects">
             {% for file in files %}
             {% include 'flp.html' %}
@@ -63,3 +69,76 @@
 </body>
 
 </html>
+
+<script>
+    const searchInput = document.querySelector('.search-input');
+    const projects = document.querySelectorAll('.project');
+
+    function clearMatches() {
+        document.querySelectorAll('.matched-field').forEach(element => {
+            element.classList.remove('matched-field');
+            // Force reflow by toggling display none/block
+            element.style.display = 'none';
+            void element.offsetHeight; // Force reflow
+            element.style.display = '';
+        });
+    }
+
+    function applyAnimation(element) {
+        element.classList.remove('matched-field');
+        // Force reflow to reset animation
+        element.style.display = 'none';
+        void element.offsetHeight; // Force reflow
+        element.style.display = '';
+        element.classList.add('matched-field');
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        const searchValue = e.target.value.toLowerCase();
+        clearMatches();  // Clear all previous matches before applying new ones
+
+        if (searchValue.trim() === '') {
+            projects.forEach(project => {
+                project.style.display = 'grid';  // Display all projects if search bar is empty
+            });
+            return;  // Exit early if the search value is empty
+        }
+
+        projects.forEach(project => {
+            const projectNameElement = project.querySelector('.project-name');
+            const projectName = projectNameElement.textContent.toLowerCase();
+            const tags = project.querySelectorAll('.tag-text');
+            const bpmElement = project.querySelector('.tempo');
+            const bpm = bpmElement.textContent.toLowerCase();
+            const channels = project.querySelectorAll('.channel-name');
+
+            let displayStyle = 'none';
+
+            if (projectName.includes(searchValue)) {
+                applyAnimation(projectNameElement);
+                displayStyle = 'grid';
+            }
+
+            tags.forEach(tag => {
+                if (tag.textContent.toLowerCase().includes(searchValue)) {
+                    applyAnimation(tag);
+                    displayStyle = 'grid';
+                }
+            });
+
+            channels.forEach(channel => {
+                if (channel.textContent.toLowerCase().includes(searchValue)) {
+                    applyAnimation(channel);
+                    displayStyle = 'grid';
+                }
+            });
+
+            if (bpm.includes(searchValue)) {
+                applyAnimation(bpmElement);
+                displayStyle = 'grid';
+            }
+
+            project.style.display = displayStyle;
+        });
+    });
+</script>

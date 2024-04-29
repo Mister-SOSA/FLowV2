@@ -24,3 +24,5 @@ instance/
 Thumbs.db
 
 /flp_cache/*
+
+./config/dirs.json
