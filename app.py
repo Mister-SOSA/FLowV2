@@ -1,19 +1,25 @@
 import os
+import subprocess
+import threading
+import datetime
+import json
 from flask import Flask, render_template, jsonify, request, send_file
 import webview
 from file_management import get_files
 from flp_parser import parse_file
 from cache_manager import CacheManager
-import datetime
-import threading
 import platform
-import subprocess
-import json
 
 app = Flask(__name__)
 
 
 def load_project_paths():
+    """
+    Load project paths from the configuration file.
+
+    Returns:
+        A list of project paths.
+    """
     with open('./config/dirs.json', 'r') as file:
         data = json.load(file)
         return data
@@ -25,7 +31,6 @@ def loading():
     Render the loading page.
     This page will be displayed while the files are being parsed.
     """
-
     return render_template('index.html',
                            parse_files=parse_files,
                            number_of_files=sum(1 for _ in get_files('/Users/sosa/Documents/Image-Line/FL Studio/Projects', '.flp')))
@@ -33,6 +38,12 @@ def loading():
 
 @app.route("/dashboard", methods=['GET'])
 def dashboard():
+    """
+    Render the dashboard page.
+
+    Returns:
+        The rendered dashboard template.
+    """
     project_paths = load_project_paths()
     cache_dir = 'flp_cache'
     cache_manager = CacheManager(cache_dir)
@@ -55,6 +66,12 @@ def dashboard():
 
 @app.route("/parse-files", methods=['POST', 'GET'])
 def parse_files():
+    """
+    Parse FL Studio project files.
+
+    Returns:
+        A JSON response indicating the status of the operation.
+    """
     project_paths = load_project_paths()
     cache_dir = 'flp_cache'
     cache_manager = CacheManager(cache_dir)
@@ -72,7 +89,7 @@ def parse_files():
     return jsonify({"status": "Complete"})
 
 
-@ app.route("/open-project", methods=['POST'])
+@app.route("/open-project", methods=['POST'])
 def open_file():
     """
     Opens a file specified by the 'project_path' parameter in the request JSON.
@@ -93,7 +110,7 @@ def open_file():
     return jsonify({"status": "Complete"})
 
 
-@ app.route("/open-folder", methods=['POST'])
+@app.route("/open-folder", methods=['POST'])
 def open_folder():
     """
     Opens the specified folder path.
@@ -103,7 +120,7 @@ def open_folder():
     Returns:
         A JSON response indicating the status of the operation.
     """
-    data = request.get_json()  # Use get_json() to properly parse the JSON data
+    data = request.get_json()
     folder_path = data['folder_path']
     if platform.system() == 'Darwin':
         subprocess.call(['open', folder_path])
@@ -116,7 +133,7 @@ def open_folder():
     return jsonify({"status": "Complete"})
 
 
-@ app.route("/change-color", methods=['POST'])
+@app.route("/change-color", methods=['POST'])
 def change_color():
     """
     Change the color of a project.
@@ -136,7 +153,7 @@ def change_color():
     return jsonify({"status": "Complete"})
 
 
-@ app.route("/clear-cache", methods=['GET'])
+@app.route("/clear-cache", methods=['GET'])
 def clear_cache():
     """
     Clears the cache directory by removing all JSON files.
@@ -189,7 +206,7 @@ def add_tag():
     return jsonify({"status": "Complete"})
 
 
-@ app.route('/delete-tag', methods=['POST'])
+@app.route('/delete-tag', methods=['POST'])
 def remove_tag():
     """
     Remove a tag from a project.
@@ -215,6 +232,11 @@ def remove_tag():
 
 
 def run_flask():
+    """
+    Run the Flask app.
+
+    This function is executed in a separate thread.
+    """
     app.run(port=5000)  # Specify the port to avoid conflicts
 
 
