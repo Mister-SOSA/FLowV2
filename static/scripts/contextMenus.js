@@ -25,16 +25,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 </span>
             `;
             button1.addEventListener('click', function () {
-                // TODO: FIX REQUEST TO DELETE TAG
-                // TODO: FIX REQUEST TO DELETE TAG
-                // TODO: FIX REQUEST TO DELETE TAG
-                // TODO: FIX REQUEST TO DELETE TAG
-                // TODO: FIX REQUEST TO DELETE TAG
-                // TODO: FIX REQUEST TO DELETE TAG
-                // TODO: FIX REQUEST TO DELETE TAG
                 tagElement.remove(); // Remove the tag element
                 menu.remove(); // Remove the menu itself
                 openMenu = null; // Reset the openMenu variable
+
+                console.log('Deleting tag:', tagElement.querySelector('.tag-text').textContent); // Log the tag being deleted (optional
 
                 // Send a request to the server to delete the tag
                 fetch('/delete-tag', {
@@ -44,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                     body: JSON.stringify({
                         tag: tagElement.querySelector('.tag-text').textContent,
-                        project_id: tagElement.closest('.project').getAttribute('project_id')
+                        project_id: container.closest('.project').getAttribute('project_id')
                     })
                 })
                     .then(response => response.json())
