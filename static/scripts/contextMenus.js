@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 menu.appendChild(button1);
 
                 // Position the menu based on mouse coordinates
-                const x = event.clientX;
-                const y = event.clientY;
+                const x = event.pageX;
+                const y = event.pageY;
                 menu.style.left = `${x}px`;
                 menu.style.top = `${y}px`;
 
