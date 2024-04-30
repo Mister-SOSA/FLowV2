@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FLow | Setup</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='global.css') }}">
+</head>
+
+<body>
+
+    <div class="header">
+        <span>FLow</span>
+        <span>Setup</span>
+    </div>
+
+    <div class="setup-container">
+        <div class="setup-form">
+            <form action="/setup" method="post">
+                <div class="path-selector-container">
+                    <label for="path-selector">Select a folder to scan:</label>
+                    <input type="file" id="path-selector" name="path" webkitdirectory directory multiple>
+                </div>
+                <button type="submit">Setup</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+
+
+</html>
