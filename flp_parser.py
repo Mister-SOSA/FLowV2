@@ -9,9 +9,7 @@ import pyflp.arrangement
 import pyflp.project
 
 BLACKLISTED_SAMPLE_TERMS = json.load(open('./config/blacklist.json'))
-
-
-BLACKLISTED_SAMPLE_TERMS = json.load(open('./config/blacklist.json'))
+BLACKLISTED_PATHS = ['%flstudiofactorydata%', '%flstudiouserdata%']
 
 
 def get_audio_duration(file_path):
@@ -24,7 +22,7 @@ def get_audio_duration(file_path):
     Returns:
         float: The duration of the audio file in seconds.
     """
-    if '%FLStudioFactoryData%' in file_path:
+    if any(term in file_path.lower() for term in BLACKLISTED_PATHS):
         return 0
     if file_path.endswith('.mp3'):
         audio = MP3(file_path)
