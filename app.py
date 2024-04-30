@@ -36,7 +36,7 @@ def loading():
                            number_of_files=sum(1 for _ in get_files('/Users/sosa/Documents/Image-Line/FL Studio/Projects', '.flp')))
 
 
-@app.route("setup")
+@app.route("/setup")
 def setup():
     """
     Render the setup page.

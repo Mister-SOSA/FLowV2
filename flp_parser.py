@@ -5,11 +5,9 @@ from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
 import pyflp.arrangement
 import pyflp.project
+import json
 
-BLACKLISTED_SAMPLE_TERMS = ['fx', 'fill', 'drum', 'percussion', 'crash', 'uplifter', 'downlifter',
-                            'impact', 'sweep', 'transition', 'riser', 'snare', 'kick', 'clap', 'hat',
-                            'cymbal', 'tom', 'loop', 'vocal', 'vocals', 'acapella', 'perc', 'vox', 'tubular',
-                            'voice', 'voices', 'spoken', 'spoken word', 'speech', 'dialog', 'dialogue', 'tag', 'kured']
+BLACKLISTED_SAMPLE_TERMS = json.load(open('./config/blacklist.json'))
 
 
 def get_audio_duration(file_path):
