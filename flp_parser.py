@@ -1,16 +1,26 @@
-import pyflp
 import os
 import random
+import json
 from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
+import pyflp
+
 import pyflp.arrangement
 import pyflp.project
-import json
 
 BLACKLISTED_SAMPLE_TERMS = json.load(open('./config/blacklist.json'))
 
 
 def get_audio_duration(file_path):
+    """
+    Get the duration of an audio file.
+
+    Args:
+        file_path (str): The path to the audio file.
+
+    Returns:
+        float: The duration of the audio file in seconds.
+    """
     if '%FLStudioFactoryData%' in file_path:
         return 0
     if file_path.endswith('.mp3'):
@@ -23,6 +33,15 @@ def get_audio_duration(file_path):
 
 
 def is_valid_sample(sample_path):
+    """
+    Check if a sample file is valid.
+
+    Args:
+        sample_path (str): The path to the sample file.
+
+    Returns:
+        bool: True if the sample is valid, False otherwise.
+    """
     if not sample_path.endswith('.wav'):
         return False
     print(sample_path.split('/')[-1].lower())
@@ -71,7 +90,6 @@ def parse_file(file_path: str):
     Returns:
         dict or None: A dictionary containing the parsed information if successful, or None if an error occurs.
     """
-
     try:
         flp_data = pyflp.parse(file_path)
         return {
@@ -101,21 +119,18 @@ def calculate_arrangement_duration(arrangement: pyflp.arrangement, bpm: float, p
     Calculate the duration of an arrangement in seconds.
 
     Args:
-        arrangement: The arrangement to calculate the duration for.
-        bpm: The beats per minute of the arrangement.
-        ppq_per_beat: The pulses per quarter note of the arrangement.
+        arrangement (pyflp.arrangement): The arrangement to calculate the duration for.
+        bpm (float): The beats per minute of the arrangement.
+        ppq_per_beat (int): The pulses per quarter note of the arrangement.
 
     Returns:
         float: The duration of the arrangement in seconds.
     """
-
     max_end_time_ppq = 0
-    for track in arrangement.tracks:  # Assuming tracks is a method or property that yields Track objects
-        for item in track:  # Here we use the track's __iter__ method implicitly
-            # Assuming length is now correctly understood/calculated
+    for track in arrangement.tracks:
+        for item in track:
             end_time = item.position + item.length
             max_end_time_ppq = max(max_end_time_ppq, end_time)
 
-    # Convert PPQ to seconds
     duration_seconds = (max_end_time_ppq / ppq_per_beat) * (60 / bpm)
     return duration_seconds
