@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleAddTag(instance) {
     const addTagField = instance.popper.querySelector('.add-tag-field');
     const tagInput = addTagField.querySelector('.tag-input');
-    const addTagButton = addTagField.querySelector('.add-tag-button');
+    const addTagButton = addTagField.querySelector('.add-tag-confirm');
 
     // Event listener to handle clicking the "Add" button
     addTagButton.addEventListener('click', () => {
@@ -42,7 +42,7 @@ function handleAddTag(instance) {
     });
 }
 
-function addTag(instance, tagInput, addTagButton) {
+function addTag(instance, tagInput) {
     const project = instance.reference.closest('.project');
     const tagsContainer = project.querySelector('.tags-container');
     const tagText = tagInput.value.trim();
@@ -66,20 +66,8 @@ function addTag(instance, tagInput, addTagButton) {
     }
 }
 
-function createTagElement(tagText) {
-    const tag = document.createElement('div');
-    tag.classList.add('tag');
-    tag.innerHTML = `
-        <span class="material-symbols-outlined tag-icon">
-            shoppingmode
-        </span>
-        <span class="tag-text">${tagText}</span>
-    `;
-    return tag;
-}
-
-function addTagToServer(projectId, tagText) {
-    return fetch('/add-tag', {
+async function addTagToServer(projectId, tagText) {
+    const response = await fetch('/add-tag', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -88,6 +76,18 @@ function addTagToServer(projectId, tagText) {
             project_id: projectId,
             tag: tagText
         })
-    })
-        .then(response => response.json());
+    });
+    return response.json();
+}
+
+function createTagElement(tagText) {
+    const tag = document.createElement('div');
+    tag.className = 'tag';
+    tag.innerHTML = `
+                <span class="material-symbols-outlined tag-icon">
+                    shoppingmode
+                </span>
+                <span class="tag-text">${tagText}</span>
+    `;
+    return tag;
 }
