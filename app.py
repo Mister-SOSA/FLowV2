@@ -36,6 +36,15 @@ def loading():
                            number_of_files=sum(1 for _ in get_files('/Users/sosa/Documents/Image-Line/FL Studio/Projects', '.flp')))
 
 
+@app.route("setup")
+def setup():
+    """
+    Render the setup page.
+    This page will be displayed when the app is launched for the first time.
+    """
+    return render_template('setup.html')
+
+
 @app.route("/dashboard", methods=['GET'])
 def dashboard():
     """
