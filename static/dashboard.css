@@ -264,6 +264,18 @@
     padding-top: 0.25rem;
 }
 
+.add-tag-field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem;
+    border-radius: 5px;
+    background-color: var(--foreground-color);
+    color: var(--text-color);
+    font-size: 0.75rem;
+}
+
 .tag-input {
     padding: 0.25rem;
     margin: 0.25rem;
@@ -273,6 +285,19 @@
     font-size: 0.75rem;
     display: flex;
     align-items: center;
+}
+
+.add-tag-confirm {
+    padding: 0.25rem;
+    margin: 0.25rem;
+    border-radius: 5px;
+    background-color: var(--foreground-color);
+    color: var(--text-color);
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 100%;
 }
 
 .add-tag-button {
@@ -305,11 +330,6 @@
     align-items: center;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     margin: .2rem;
-}
-
-.add-tag-button {
-    font-size: 1rem;
-    font-weight: 800;
 }
 
 .add-tag-button-container:hover {

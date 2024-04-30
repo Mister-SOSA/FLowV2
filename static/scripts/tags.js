@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
         content: `
         <div class="add-tag-field">
             <input type="text" class="tag-input" placeholder="Add a tag">
-            <button class="add-tag-button">Add</button>
+            <button class="add-tag-confirm">Add</button>
         </div>
         `,
         placement: 'bottom',
