@@ -11,6 +11,9 @@ import pyflp.project
 BLACKLISTED_SAMPLE_TERMS = json.load(open('./config/blacklist.json'))
 
 
+BLACKLISTED_SAMPLE_TERMS = json.load(open('./config/blacklist.json'))
+
+
 def get_audio_duration(file_path):
     """
     Get the duration of an audio file.
@@ -29,6 +32,7 @@ def get_audio_duration(file_path):
         audio = WAVE(file_path)
     else:
         print(f"Unsupported file format: {file_path}")
+        return 0
     return audio.info.length
 
 
@@ -42,10 +46,10 @@ def is_valid_sample(sample_path):
     Returns:
         bool: True if the sample is valid, False otherwise.
     """
+    filename = sample_path.split('/')[-1].lower()
     if not sample_path.endswith('.wav'):
         return False
-    print(sample_path.split('/')[-1].lower())
-    if any(term in sample_path.split('/')[-1].lower() for term in BLACKLISTED_SAMPLE_TERMS):
+    if any(term in filename for term in BLACKLISTED_SAMPLE_TERMS):
         return False
     if '%FLStudioFactoryData%' in sample_path:
         return False
@@ -67,15 +71,7 @@ def validate_sample(sample):
         bool: True if the sample is valid, False otherwise.
     """
     try:
-        if not isinstance(sample, pyflp.channel.Sampler):
-            return False
-        if not is_valid_sample(str(sample.sample_path)):
-            return False
-        if get_audio_duration(str(sample.sample_path)) < 5:
-            return False
-
-        return True
-
+        return is_valid_sample(str(sample.sample_path))
     except:
         return False
 
